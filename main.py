@@ -1,9 +1,11 @@
 from transformers import pipeline, AutoTokenizer, AutoModelForSeq2SeqLM
 from tkinter import filedialog, messagebox
+from pydub import AudioSegment
 import customtkinter as ctk
 import threading
 import whisper
 import pyaudio
+import tempfile
 import wave
 
 class App(ctk.CTk):
@@ -110,15 +112,13 @@ class App(ctk.CTk):
 
     def run_transcribe(self):
         model_type = self.model_option.get()
-        audio = self.file_path
+        path = self.file_path
         language = self.language_option.get()
         lang_to = self.language_option_to.get()
         task = self.task_option.get()
         self.message_label.configure(text=f"Task Started, Please Wait...\nModel: {model_type}\nLanguage: {language}\nTask: {task}\nLanguage to Translate to: {lang_to}")
 
         model = whisper.load_model(self.dictModels[model_type])
-        audio = whisper.load_audio(audio)
-        audio = whisper.pad_or_trim(audio)
 
         self.model_option.configure(state="disabled")
         self.language_option.configure(state="disabled")
@@ -128,32 +128,27 @@ class App(ctk.CTk):
         self.record_button.configure(state="disabled")
         self.start_button.configure(state="disabled")
         self.export_button.configure(state="disabled")
-        
-        mel = whisper.log_mel_spectrogram(audio).to(model.device)
-
         self.textbox.configure(state="normal")
 
-        options = whisper.DecodingOptions(task=task, language=language, fp16=False)
         if task == "transcribe" and lang_to == "None":
-            result = whisper.decode(model, mel, options)
+            result_text = self.audio_chuncking(path, model, task, language)
             self.textbox.delete("0.0", "end")
-            self.textbox.insert("0.0", result.text)
+            self.textbox.insert("0.0", result_text)
         elif task == "translate" and lang_to != "None":
             if lang_to == "English":
-                result = whisper.decode(model, mel, options)
+                result_text = self.audio_chuncking(path, model, task, language)
                 self.textbox.delete("0.0", "end")
-                self.textbox.insert("0.0", result.text)
+                self.textbox.insert("0.0", result_text)
             elif lang_to == language:
-                options = whisper.DecodingOptions(task="transcribe", language=language, fp16=False)
-                result = whisper.decode(model, mel, options)
+                result_text = self.audio_chuncking(path, model, "transcribe", language)
                 self.textbox.delete("0.0", "end")
-                self.textbox.insert("0.0", result.text)
+                self.textbox.insert("0.0", result_text)
             else: 
-                result = whisper.decode(model, mel, options)
+                result_text = self.audio_chuncking(path, model, task, language)
                 tokenizer = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-en-" + self.dictLang[lang_to])
-                model = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-en-" + self.dictLang[lang_to])
-                translator = pipeline("translation",model=model, tokenizer=tokenizer)
-                res = translator(result.text)
+                modelT = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-en-" + self.dictLang[lang_to])
+                translator = pipeline("translation",model=modelT, tokenizer=tokenizer)
+                res = translator(result_text)
                 self.textbox.delete("0.0", "end")
                 self.textbox.insert("0.0", res[0]["translation_text"])
         else:
@@ -182,6 +177,24 @@ class App(ctk.CTk):
         self.start_button.configure(state="disabled")
         self.export_button.configure(state="normal")
         self.message_label.configure(text="Task Completed.")
+
+    def audio_chuncking(self, path, model, task, language):
+        audio_file = AudioSegment.from_file(path)
+        segment_duration = 30000
+        segments = [audio_file[start:start+segment_duration] for start in range(0, len(audio_file), segment_duration)]
+        transcriptions = ""
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            for i, segment in enumerate(segments):
+                temp_path = f"{temp_dir}/segment_{i}.wav"
+                segment.export(temp_path, format="wav")
+                audio = whisper.load_audio(temp_path)
+                audio = whisper.pad_or_trim(audio)
+                mel = whisper.log_mel_spectrogram(audio).to(model.device)
+                options = whisper.DecodingOptions(task=task, language=language, fp16=False)
+                result = whisper.decode(model, mel, options)
+                transcriptions = transcriptions + " " + result.text
+        return transcriptions
 
     def run_task(self):
         try:
@@ -253,34 +266,28 @@ class Recorder():
         wf.close()
 
         model = whisper.load_model(app.dictModels[model_type])
-        audio = whisper.load_audio("output.wav")
-        audio = whisper.pad_or_trim(audio)
-
-        mel = whisper.log_mel_spectrogram(audio).to(model.device)
+        path = "output.wav"
         
         app.textbox.configure(state="normal")
         
-        options = whisper.DecodingOptions(task=task, language=language, fp16=False)
         if task == "transcribe" and lang_to == "None":
-            result = whisper.decode(model, mel, options)
+            result_text = app.audio_chuncking(path, model, task, language)
             app.textbox.delete("0.0", "end")
-            app.textbox.insert("0.0", result.text)
+            app.textbox.insert("0.0", result_text)
         elif task == "translate" and lang_to != "None":
             if lang_to == "English":
-                result = whisper.decode(model, mel, options)
+                result_text = app.audio_chuncking(path, model, task, language)
                 app.textbox.delete("0.0", "end")
-                app.textbox.insert("0.0", result.text)
+                app.textbox.insert("0.0", result_text)
             elif lang_to == language:
-                options = whisper.DecodingOptions(task="transcribe", language=language, fp16=False)
-                result = whisper.decode(model, mel, options)
+                result_text = app.audio_chuncking(path, model, "transcribe", language)
                 app.textbox.delete("0.0", "end")
-                app.textbox.insert("0.0", result.text)
+                app.textbox.insert("0.0", result_text)
             else: 
-                result = whisper.decode(model, mel, options)
                 tokenizer = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-en-" + app.dictLang[lang_to])
-                model = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-en-" + app.dictLang[lang_to])
-                translator = pipeline("translation",model=model, tokenizer=tokenizer)
-                res = translator(result.text)
+                modelT = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-en-" + app.dictLang[lang_to])
+                translator = pipeline("translation",model=modelT, tokenizer=tokenizer)
+                res = translator(result_text)
                 app.textbox.delete("0.0", "end")
                 app.textbox.insert("0.0", res[0]["translation_text"])
         else:
