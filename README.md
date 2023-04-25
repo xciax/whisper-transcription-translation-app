@@ -4,7 +4,7 @@ A transcription and translation app for 8 Languages.
 The transcription is based on the Whisper model from OpenAI, the GUI structure is borrowed from the whisper-gui-app repository of iamironman0 and for translation the Helsinki NLP models where used.
 
 ## Preview
-![Bildschirm­foto 2023-04-25 um 14 22 05](https://user-images.githubusercontent.com/110823380/234274622-78c06014-2d51-4313-be41-8695d4291faa.png)
+![Bildschirm­foto 2023-04-25 um 19 46 40](https://user-images.githubusercontent.com/110823380/234359644-d3adeda0-45e0-4af9-9f77-9efb44f5fac8.png)
 
 ## Features
   - Models: Tiny, Base, Small, Medium, Large
