@@ -24,11 +24,13 @@ The transcription is based on the Whisper model from OpenAI, the GUI structure i
 - transformers
 
 1. Run this command in the shell/terminal in the directory where it is saved to install the requirements:
+
 ```
 pip install -r requirements.txt
 ```
 
 2. Run program by executing this command in the shell/terminal in the directory where it is saved:
+
 Windows
 ```
 python main.py
