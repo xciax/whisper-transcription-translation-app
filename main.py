@@ -14,7 +14,7 @@ class App(ctk.CTk):
         self.recorder = Recorder()
         self.main_window()
         self.file_path = None
-        self.dictLang = {'Afrikaans': 'af', 'Albanian': 'sq', 'Amharic': 'am', 'Arabic': 'ar', 'Armenian': 'hy', 'Assamese': 'as', 'Azerbaijani': 'az', 'Bashkir': 'ba', 'Basque': 'eu', 'Belarusian': 'be', 'Bengali': 'bn', 'Bosnian': 'bs', 'Breton': 'br', 'Bulgarian': 'bg', 'Burmese': 'my', 'Castilian': 'es', 'Catalan': 'ca', 'Chinese': 'zh', 'Croatian': 'hr', 'Czech': 'cs', 'Danish': 'da', 'Dutch': 'nl', 'English': 'en', 'Estonian': 'et', 'Faroese': 'fo', 'Finnish': 'fi', 'Flemish': 'nl', 'French': 'fr', 'Galician': 'gl', 'Georgian': 'ka', 'German': 'de', 'Greek': 'el', 'Gujarati': 'gu', 'Haitian': 'ht', 'Haitian Creole': 'ht', 'Hausa': 'ha', 'Hawaiian': 'haw', 'Hebrew': 'he', 'Hindi': 'hi', 'Hungarian': 'hu', 'Icelandic': 'is', 'Indonesian': 'id', 'Italian': 'it', 'Japanese': 'ja', 'Javanese': 'jw', 'Kannada': 'kn', 'Kazakh': 'kk', 'Khmer': 'km', 'Korean': 'ko', 'Lao': 'lo', 'Latin': 'la', 'Latvian': 'lv', 'Letzeburgesch': 'lb', 'Lingala': 'ln', 'Lithuanian': 'lt', 'Luxembourgish': 'lb', 'Macedonian': 'mk', 'Malagasy': 'mg', 'Malay': 'ms', 'Malayalam': 'ml', 'Maltese': 'mt', 'Maori': 'mi', 'Marathi': 'mr', 'Moldavian': 'mo', 'Moldovan': 'mo', 'Mongolian': 'mn', 'Myanmar': 'my', 'Nepali': 'ne', 'Norwegian': 'no', 'Nynorsk': 'nn', 'Occitan': 'oc', 'Panjabi': 'pa', 'Pashto': 'ps', 'Persian': 'fa', 'Polish': 'pl', 'Portuguese': 'pt', 'Punjabi': 'pa', 'Pushto': 'ps', 'Romanian': 'ro', 'Russian': 'ru','Sindhi': 'sd','Sinhala': 'si', 'Sinhalese': 'si','Slovak': 'sk','Slovenian': 'sl','Somali': 'so','Spanish': 'es','Sundanese': 'su','Swahili': 'sw','Swedish': 'sv','Tagalog': 'tl','Tajik': 'tg','Tamil': 'ta','Tatar': 'tt','Telugu': 'te','Thai': 'th','Tibetan': 'bo','Turkish': 'tr','Turkmen': 'tk','Ukrainian': 'uk','Urdu': 'ur','Uzbek': 'uz','Valencian': 'ca','Vietnamese': 'vi','Welsh': 'cy','Yiddish': 'yi','Yoruba': 'yo','Zulu': 'zu'}
+        self.dictLang = {'German': 'de', 'English': 'en', 'Spanish': 'es', 'Italian': 'it', 'French': 'fr', 'Japanese': 'ja', 'Korean': 'ko', 'Chinese': 'zh'}
         self.dictModels = {"Tiny (~1GB)":"tiny", "Base (~1GB)":"base", "Small (~2GB)":"small", "Medium (~5GB)":"medium", "Large (~10GB)":"large"}
 
 
@@ -45,7 +45,7 @@ class App(ctk.CTk):
 
         self.from_lang_label = ctk.CTkLabel(self.sidebar_frame, text="From Language:")
         self.from_lang_label.grid(row=3, column=0, padx=20, pady=(5, 0))
-        self.language_option = ctk.CTkOptionMenu(self.sidebar_frame, values=["Afrikaans", "Albanian", "Amharic", "Arabic", "Armenian", "Assamese", "Azerbaijani", "Bashkir", "Basque", "Belarusian", "Bengali", "Bosnian", "Breton", "Bulgarian", "Burmese", "Castilian", "Catalan", "Chinese", "Croatian", "Czech", "Danish", "Dutch", "English", "Estonian", "Faroese", "Finnish", "Flemish", "French", "Galician", "Georgian", "German", "Greek", "Gujarati", "Haitian", "Haitian Creole", "Hausa", "Hawaiian", "Hebrew", "Hindi", "Hungarian", "Icelandic", "Indonesian", "Italian", "Japanese", "Javanese", "Kannada", "Kazakh", "Khmer", "Korean", "Lao", "Latin", "Latvian", "Letzeburgesch", "Lingala", "Lithuanian", "Luxembourgish", "Macedonian", "Malagasy", "Malay", "Malayalam", "Maltese", "Maori", "Marathi", "Moldavian", "Moldovan", "Mongolian", "Myanmar", "Nepali", "Norwegian", "Nynorsk", "Occitan", "Panjabi", "Pashto", "Persian", "Polish", "Portuguese", "Punjabi", "Pushto", "Romanian", "Russian", "Sanskrit", "Serbian", "Shona", "Sindhi", "Sinhala", "Sinhalese", "Slovak", "Slovenian", "Somali", "Spanish", "Sundanese", "Swahili", "Swedish", "Tagalog", "Tajik", "Tamil", "Tatar", "Telugu", "Thai", "Tibetan", "Turkish", "Turkmen", "Ukrainian", "Urdu", "Uzbek", "Valencian", "Vietnamese", "Welsh", "Yiddish", "Yoruba"])
+        self.language_option = ctk.CTkOptionMenu(self.sidebar_frame, values=['German', 'English', 'Spanish', 'Italian', 'French', 'Japanese', 'Korean', 'Chinese'])
         self.language_option.grid(row=4, column=0, padx=20, pady=0)
 
         self.task_label = ctk.CTkLabel(self.sidebar_frame, text="Task:")
@@ -55,7 +55,7 @@ class App(ctk.CTk):
 
         self.to_lang_label = ctk.CTkLabel(self.sidebar_frame, text="To Language:")
         self.to_lang_label.grid(row=7, column=0, padx=20, pady=(5, 0))
-        self.language_option_to = ctk.CTkOptionMenu(self.sidebar_frame, values=["None", "Afrikaans", "Albanian", "Amharic", "Arabic", "Armenian", "Assamese", "Azerbaijani", "Bashkir", "Basque", "Belarusian", "Bengali", "Bosnian", "Breton", "Bulgarian", "Burmese", "Castilian", "Catalan", "Chinese", "Croatian", "Czech", "Danish", "Dutch", "English", "Estonian", "Faroese", "Finnish", "Flemish", "French", "Galician", "Georgian", "German", "Greek", "Gujarati", "Haitian", "Haitian Creole", "Hausa", "Hawaiian", "Hebrew", "Hindi", "Hungarian", "Icelandic", "Indonesian", "Italian", "Japanese", "Javanese", "Kannada", "Kazakh", "Khmer", "Korean", "Lao", "Latin", "Latvian", "Letzeburgesch", "Lingala", "Lithuanian", "Luxembourgish", "Macedonian", "Malagasy", "Malay", "Malayalam", "Maltese", "Maori", "Marathi", "Moldavian", "Moldovan", "Mongolian", "Myanmar", "Nepali", "Norwegian", "Nynorsk", "Occitan", "Panjabi", "Pashto", "Persian", "Polish", "Portuguese", "Punjabi", "Pushto", "Romanian", "Russian", "Sanskrit", "Serbian", "Shona", "Sindhi", "Sinhala", "Sinhalese", "Slovak", "Slovenian", "Somali", "Spanish", "Sundanese", "Swahili", "Swedish", "Tagalog", "Tajik", "Tamil", "Tatar", "Telugu", "Thai", "Tibetan", "Turkish", "Turkmen", "Ukrainian", "Urdu", "Uzbek", "Valencian", "Vietnamese", "Welsh", "Yiddish", "Yoruba"])
+        self.language_option_to = ctk.CTkOptionMenu(self.sidebar_frame, values=['None', 'German', 'English', 'Spanish', 'Italian', 'French', 'Japanese', 'Korean', 'Chinese'])
         self.language_option_to.grid(row=8, column=0, padx=20, pady=0)
 
         self.open_file_button = ctk.CTkButton(self.sidebar_frame, text="Choose only an\nAudio File", command=self.open_file, font=("", 12, "bold"))
@@ -144,9 +144,9 @@ class App(ctk.CTk):
                 self.textbox.delete("0.0", "end")
                 self.textbox.insert("0.0", result_text)
             else: 
-                result_text = self.audio_chuncking(path, model, task, language)
-                tokenizer = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-en-" + self.dictLang[lang_to])
-                modelT = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-en-" + self.dictLang[lang_to])
+                result_text = self.audio_chuncking(path, model, "transcribe", language)
+                tokenizer = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-" + self.dictLang[language]+ "-" + self.dictLang[lang_to])
+                modelT = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-" + self.dictLang[language]+ "-" + self.dictLang[lang_to])
                 translator = pipeline("translation",model=modelT, tokenizer=tokenizer)
                 res = translator(result_text)
                 self.textbox.delete("0.0", "end")
@@ -284,8 +284,9 @@ class Recorder():
                 app.textbox.delete("0.0", "end")
                 app.textbox.insert("0.0", result_text)
             else: 
-                tokenizer = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-en-" + app.dictLang[lang_to])
-                modelT = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-en-" + app.dictLang[lang_to])
+                result_text = app.audio_chuncking(path, model, "transcribe", language)
+                tokenizer = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-" + app.dictLang[language]+ "-" + app.dictLang[lang_to])
+                modelT = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-" + app.dictLang[language]+ "-" + app.dictLang[lang_to])
                 translator = pipeline("translation",model=modelT, tokenizer=tokenizer)
                 res = translator(result_text)
                 app.textbox.delete("0.0", "end")
