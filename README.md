@@ -15,7 +15,7 @@ The transcription is based on the Whisper model from OpenAI, the GUI structure i
 
 ## Setup
 ### Requirements
-- Python version 3.9
+- Python version 3.9-3.10
 - customtkinter
 - torch
 - ffmpeg
