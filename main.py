@@ -23,17 +23,17 @@ class App(ctk.CTk):
         ctk.set_default_color_theme("green")
         
         self.title("Audio Translation & Transcriber")
-        self.geometry("1100x580")
-        self.minsize(1100,580)
-        self.maxsize(1100,580)
+        self.geometry("1200x700")
+        self.minsize(1200,700)
+        self.maxsize(1200,700)
         self.protocol("WM_DELETE_WINDOW", self.close_app)
 
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure((0, 1, 2), weight=1)
 
         self.sidebar_frame = ctk.CTkFrame(self, width=140, corner_radius=0)
-        self.sidebar_frame.grid(row=0, column=0, rowspan=12, sticky="nsew")
-        self.sidebar_frame.grid_rowconfigure(12, weight=1)
+        self.sidebar_frame.grid(row=0, column=0, rowspan=13, sticky="nsew")
+        self.sidebar_frame.grid_rowconfigure(13, weight=1)
 
         self.logo_label = ctk.CTkLabel(self.sidebar_frame, text="Options", font=("", 28, "bold"))
         self.logo_label.grid(row=0, column=0, padx=20, pady=(10, 10))
@@ -60,14 +60,18 @@ class App(ctk.CTk):
 
         self.open_file_button = ctk.CTkButton(self.sidebar_frame, text="Choose only an\nAudio File", command=self.open_file, font=("", 12, "bold"))
         self.open_file_button.grid(row=9, column=0, padx=20, pady=(50,5))
-
+        
+        self.start_button = ctk.CTkButton(self.sidebar_frame, text="Translate/Transcribe\nAudio File", command=self.run_task, font=("", 12, "bold"))
+        self.start_button.grid(row=10, column=0, padx=20, pady=5)
+        self.start_button.configure(state="disabled")
+        
         self.record_button = ctk.CTkButton(self.sidebar_frame, text="Record", command=self.run_recording, font=("", 12, "bold"))
-        self.record_button.grid(row=10, column=0, padx=20, pady=(5, 50))
+        self.record_button.grid(row=11, column=0, padx=20, pady=5)
 
         self.appearance_mode_label = ctk.CTkLabel(self.sidebar_frame, text="Appearance Mode:")
-        self.appearance_mode_label.grid(row=11, column=0, padx=20, pady=(20,0))
+        self.appearance_mode_label.grid(row=14, column=0, padx=20, pady=(20,0))
         self.appearance_mode_optionemenu = ctk.CTkOptionMenu(self.sidebar_frame, values=["Light", "Dark", "System"],command=self.change_appearance_mode)
-        self.appearance_mode_optionemenu.grid(row=12, column=0, padx=20, pady=(0, 20))
+        self.appearance_mode_optionemenu.grid(row=15, column=0, padx=20, pady=(0, 20))
         self.appearance_mode_optionemenu.set("System")
 
         self.textbox = ctk.CTkTextbox(self, width=250, wrap="word")
@@ -75,15 +79,12 @@ class App(ctk.CTk):
         self.textbox.insert("0.0", "Ouput:\n\n")
         self.textbox.configure(state="disabled")
 
+        self.export_button = ctk.CTkButton(self, text="Save Text", command=self.export_text, font=("", 14, "bold"), width=125)
+        self.export_button.grid(row=3, column=2, padx=20, pady=20)
+
         self.message_label = ctk.CTkLabel(self, text="")
         self.message_label.grid(row=2, column=1, padx=0, pady=0)
-
-        self.start_button = ctk.CTkButton(self, text="Start", command=self.run_task, font=("", 14, "bold"), width=256)
-        self.start_button.grid(row=3, column=1, padx=20, pady=20)
-        self.start_button.configure(state="disabled")
-
-        self.export_button = ctk.CTkButton(self, text="Save Text", command=self.export_text, font=("", 14, "bold"), width=256)
-        self.export_button.grid(row=3, column=2, padx=20, pady=20)
+        
 
     def change_appearance_mode(self, new_appearance_mode: str):
         ctk.set_appearance_mode(new_appearance_mode)
@@ -305,7 +306,6 @@ class Recorder():
             return
         
         app.textbox.configure(state="disabled")
-
         app.model_option.configure(state="normal")
         app.language_option.configure(state="normal")
         app.task_option.configure(state="normal")

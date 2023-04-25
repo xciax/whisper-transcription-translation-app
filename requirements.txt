@@ -1,0 +1,7 @@
+git+https://github.com/openai/whisper.git
+customtkinter
+torch
+ffmpeg
+pyaudio
+pydub
+transformers
